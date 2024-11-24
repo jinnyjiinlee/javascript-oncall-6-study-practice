@@ -6,7 +6,7 @@ export class MainController {
   }
 
   async startProgram() {
-    const emergencyWorkDetails = await this.input.getEmergencyWorkDetailsInput();
-
+    const workAllotmentTime = await this.input.getWorkAllotmentTimeInput();
+    const workOnWeekdaysList = await this.input.getWorkOnWeekdaysListInput();
   }
 }
