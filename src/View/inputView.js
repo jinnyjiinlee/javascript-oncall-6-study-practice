@@ -17,4 +17,15 @@ export class InputHandler {
 
     return workOnWeekdaysList;
   }
+
+  async getWorkHolidayListInput() {
+    const workHolidaysList = await Console.readLineAsync(
+      MESSAGES.INPUT.WORK_HOLIDAYS__LIST,
+    );
+
+    return workHolidaysList;
+  }
+
+
+
 }

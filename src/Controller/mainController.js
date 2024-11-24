@@ -8,5 +8,6 @@ export class MainController {
   async startProgram() {
     const workAllotmentTime = await this.input.getWorkAllotmentTimeInput();
     const workOnWeekdaysList = await this.input.getWorkOnWeekdaysListInput();
+    const workHolidaysList = await this.input.getWorkHolidayListInput();
   }
 }
