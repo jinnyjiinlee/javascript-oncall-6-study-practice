@@ -21,6 +21,6 @@ export class MainController {
     // 입력한 휴일 근무자
     const parsedHolidaysList = parseWorkerList(workHolidaysList);
 
-    this.output.printWorkerAllotmentList(workAllotmentTime);
+    this.output.printWorkerAllotmentList(workAllotmentTime, parsedWeekdaysList, parsedHolidaysList);
   }
 }

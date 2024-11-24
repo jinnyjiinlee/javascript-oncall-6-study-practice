@@ -1,6 +1,4 @@
 import { Console } from '@woowacourse/mission-utils';
-import { MESSAGES } from '../Constants/messages.js';
-import { parseWorkerList } from '../Model/workerListParser.js';
 import { parseWorkAllotmentTime } from '../Model/workAllotmentTimeParser.js';
 import { LEGAL_HOLIDAY, DAYS_OF_MONTH } from '../Constants/constant.js';
 
@@ -11,13 +9,23 @@ export class OutputHandler {
     this.dayOfHoliday = null; // 이 달의 공휴일
     this.day = 1;
     this.dayOfWeekArrIndex = 0;
+
+    this.weekdayWorkersIndex = 0;
+    this.holidayWorkersIndex = 0;
   }
 
   // 월요일부터 쭉 도는데, 시작 요일을 따로 설정을 해야 된다.
 
   // eslint-disable-next-line max-lines-per-function
-  printWorkerAllotmentList(workAllotmentTime) {
+  printWorkerAllotmentList(
+    workAllotmentTime,
+    parsedWeekdaysList,
+    parsedHolidaysList,
+  ) {
     this.workAllotmentTime = workAllotmentTime;
+    this.weekdayWorkers = parsedWeekdaysList;
+    this.holidayWorkers = parsedHolidaysList;
+
     this.findMonthAndDayOfWeek();
     this.theNumberOfMonth = DAYS_OF_MONTH[this.month];
 
@@ -26,8 +34,6 @@ export class OutputHandler {
     // 여기 필요한 것
     // 평일 사람들 명단
     // 휴일 사람들 명단
-
-    // 아래부터 이제 반복문 돌리기 얼마나 돌려야 되나? 달의 수만큼? 아니면 사람의 수 만큼? 그 달의 수만큼 그 달의 수를 보자.
 
     this.dayOfWeekArrIndex = this.dayOfWeekArr.indexOf(this.firstDayOfWeek); // 화요일이면 1이 된다.
 
@@ -100,8 +106,9 @@ export class OutputHandler {
 
   printWeekdayWorker() {
     Console.print(
-      `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]} {workerName}`,
+      `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]} ${this.weekdayWorkers[this.weekdayWorkersIndex]}`,
     );
+    this.weekdayWorkersIndex += 1;
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -109,8 +116,9 @@ export class OutputHandler {
     if (this.day === this.dayOfHoliday) {
       // 법정 휴일 표시 휴일 사람 배정
       Console.print(
-        `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]}(휴일) {workerName}`,
+        `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]}(휴일) ${this.holidayWorkers[this.holidayWorkersIndex]}`,
       );
+      this.holidayWorkersIndex += 1;
     }
 
     if (
@@ -119,8 +127,9 @@ export class OutputHandler {
     ) {
       // 주말
       Console.print(
-        `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]} {workerName}`,
+        `${this.month}월 ${this.day}일 ${this.dayOfWeekArr[this.dayOfWeekArrIndex]} ${this.holidayWorkers[this.holidayWorkersIndex]}`,
       );
+      this.holidayWorkersIndex += 1;
     }
   }
 }
