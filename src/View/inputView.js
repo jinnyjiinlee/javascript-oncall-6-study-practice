@@ -1,16 +1,31 @@
 import { Console } from '@woowacourse/mission-utils';
 import { MESSAGES } from '../Constants/messages.js';
 import { WorkDetailsValidator } from '../Validation/workDetailsValidatior.js';
+import { parseWorkAllotmentTime } from '../Model/workAllotmentTimeParser.js';
 
 export class InputHandler {
   async getWorkAllotmentTimeInput() {
-    const WorkAllotmentTime = await Console.readLineAsync(
-      MESSAGES.INPUT.WORK_ALLOTMENTS_TIME,
-    );
+    while (true) {
+      try {
+        const WorkAllotmentTime = await Console.readLineAsync(
+          MESSAGES.INPUT.WORK_ALLOTMENTS_TIME,
+        );
+        const parsedMonthAndDayOfWeek =
+          parseWorkAllotmentTime(WorkAllotmentTime);
 
-    return WorkAllotmentTime;
+        this.month = parsedMonthAndDayOfWeek[0];
+        this.dayOfWeek = parsedMonthAndDayOfWeek[1];
+
+        new WorkDetailsValidator().validateWorkDetails(
+          this.month,
+          this.dayOfWeek,
+        );
+        return WorkAllotmentTime;
+      } catch (e) {
+        Console.print(e.message);
+      }
+    }
   }
-
 
   async getWorkOnWeekdaysListInput() {
     const workOnWeekdaysList = await Console.readLineAsync(
