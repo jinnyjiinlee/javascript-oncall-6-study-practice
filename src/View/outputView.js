@@ -23,6 +23,7 @@ export class OutputHandler {
     parsedHolidaysList,
   ) {
     this.workAllotmentTime = workAllotmentTime;
+
     this.weekdayWorkers = parsedWeekdaysList;
     this.holidayWorkers = parsedHolidaysList;
 
@@ -31,29 +32,21 @@ export class OutputHandler {
 
     this.checkLegalHoliday(); // 그 달의 몇일이 법정 공휴일인지 나옴 5월 이면 5라고 나와서 값이 생겼다.
 
-    // 여기 필요한 것
-    // 평일 사람들 명단
-    // 휴일 사람들 명단
-
     this.dayOfWeekArrIndex = this.dayOfWeekArr.indexOf(this.firstDayOfWeek); // 화요일이면 1이 된다.
 
     for (let i = 0; i < this.theNumberOfMonth; i += 1) {
+      if (this.weekdayWorkersIndex === this.weekdayWorkers.length) {
+        this.weekdayWorkersIndex = 0;
+      }
+
+      if (this.holidayWorkers === this.holidayWorkers.length) {
+        this.holidayWorkersIndex = 0;
+      }
       // 그달의 수만큼 반복문 돌리기
-      // 시작 요일은?
       if (this.dayOfWeekArrIndex === 7) {
         this.dayOfWeekArrIndex = 0;
       }
-
-      // 휴일 유무 -> 해결 되었고
-      // 사람 -> 불러와야 된다
-
-      // console.log(
-      //   'this.dayOfWeekArr[this.dayOfWeekArrIndex]: ',
-      //   this.dayOfWeekArr[this.dayOfWeekArrIndex],
-      // );
-      // console.log('this.checkWeekday(): ', this.checkWeekday());
       if (this.checkWeekday()) {
-        // 평일이면 true
         this.printWeekdayWorker();
       }
 
@@ -62,7 +55,7 @@ export class OutputHandler {
       }
 
       this.day += 1; // 날은 하루씩 증가하면 된다.
-      this.dayOfWeekArrIndex += 1; // 하나씩 증가하면된다.
+      this.dayOfWeekArrIndex += 1; // 월 인덱스도 하나씩 증가하면된다.
     }
   }
 
