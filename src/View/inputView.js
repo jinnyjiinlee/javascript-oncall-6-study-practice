@@ -1,5 +1,6 @@
 import { Console } from '@woowacourse/mission-utils';
 import { MESSAGES } from '../Constants/messages.js';
+import { WorkDetailsValidator } from '../Validation/workDetailsValidatior.js';
 
 export class InputHandler {
   async getWorkAllotmentTimeInput() {
@@ -9,6 +10,7 @@ export class InputHandler {
 
     return WorkAllotmentTime;
   }
+
 
   async getWorkOnWeekdaysListInput() {
     const workOnWeekdaysList = await Console.readLineAsync(
@@ -25,7 +27,4 @@ export class InputHandler {
 
     return workHolidaysList;
   }
-
-
-
 }

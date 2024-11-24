@@ -72,22 +72,20 @@ export class AllotmentHandler {
     let weekdaysListArrNumber = 0;
     let weekendListArrNumber = 0;
 
+    // 겹치는 거  만약에 평일 근
 
     for (let day = 1; day < this.loopLength + 1; day += 1) {
       let Holiday = '';
-      // 만약 평일이면
 
       for (let i = 0; i < this.LEGAL_HOLIDAY.length; i += 1) {
         // eslint-disable-next-line max-depth
-        // console.log('Number(this.monthInput): ', Number(this.monthInput))
-        // console.log('day: ', day)
         if (
           Number(this.monthInput) === this.LEGAL_HOLIDAY[i][0] &&
           day === this.LEGAL_HOLIDAY[i][1]
         ) {
           // console.log('들어왔나????')
           Holiday = '(휴일)';
-        } 
+        }
       }
 
       if (
@@ -101,7 +99,7 @@ export class AllotmentHandler {
         weekdaysListArrNumber += 1;
       }
 
-      // 만약 주말이면
+      // 만약 주말이나 휴일이면
       if (
         this.dayOfWeek[this.weekNumber] === '토' ||
         this.dayOfWeek[this.weekNumber] === '일' ||
@@ -109,7 +107,31 @@ export class AllotmentHandler {
       ) {
         this.workerList = this.parsedHolidaysList[weekendListArrNumber];
         weekendListArrNumber += 1;
+        // 평일 수아 = 주말 수아
+        // eslint-disable-next-line max-depth
+        // console.log(
+        //   'this.parsedWeekdaysList[weekdaysListArrNumber-1]: ',
+        //   this.parsedWeekdaysList[weekdaysListArrNumber - 1],
+        // );
+        // console.log('this.workerList: ', this.workerList);
+
+        if (
+          this.parsedWeekdaysList[weekdaysListArrNumber - 1] === this.workerList
+        ) {
+          // 바꾸는 방법?
+          const sua = this.parsedHolidaysList[weekendListArrNumber];
+          this.parsedHolidaysList[weekendListArrNumber] =
+            this.parsedHolidaysList[weekendListArrNumber + 1];
+          this.parsedHolidaysList[weekendListArrNumber + 1] = sua;
+
+          this.workerList = this.parsedHolidaysList[weekendListArrNumber];
+        }
       }
+
+      // 이전 평일 근무자와 지금 휴일 근무자가 같을 경우
+
+      // 만약 연속 2일은 안된다. 만약에
+      // 평일근무를 수아가 한번 하고 -> 그 다음 휴일 근무를 수아가 하면 -> 다음 휴일 근무자와 수아가 휴일 근무 배열에서 바뀌어야 된다.
 
       Console.print(
         `${this.monthInput}월 ${day}일 ${this.dayOfWeek[this.weekNumber]}${Holiday} ${this.workerList}`,
