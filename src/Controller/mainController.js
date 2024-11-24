@@ -1,8 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import { InputHandler } from '../View/inputView.js';
 import { parseWorkAllotmentTime } from '../Model/workAllotmentTimeParser.js';
-import { calculateDaysTheNumberOfMonth } from '../Model/theNumberOfDaysInMonth.js';
-import { parseWorkOnWeekdaysList } from '../Model/workOnWeekdaysListParser.js';
+import { AllotmentHandler } from '../Model/theNumberOfDaysInMonth.js';
+import { parseWorkerList } from '../Model/workerListParser.js';
 
 export class MainController {
   constructor() {
@@ -21,14 +21,21 @@ export class MainController {
 
     // 여기서 명단을 입력
     const workOnWeekdaysList = await this.input.getWorkOnWeekdaysListInput();
+    const workHolidaysList = await this.input.getWorkHolidayListInput();
 
     // const workOnWeekdaysList = '지니, 호리, 버미, 상호';
 
     // 명단을 입력하면 배열로 parse 해야 된다.
-    const parsedWeekdaysList = parseWorkOnWeekdaysList(workOnWeekdaysList);
+    const parsedWeekdaysList = parseWorkerList(workOnWeekdaysList);
 
-    calculateDaysTheNumberOfMonth(month, dayOfWeek, parsedWeekdaysList);
+    // const workHolidaysList = '버미, 예지, 지니, 상호';
+    const parsedHolidaysList = parseWorkerList(workHolidaysList);
 
-    // const workHolidaysList = await this.input.getWorkHolidayListInput();
+    new AllotmentHandler().calculateDaysTheNumberOfMonth(
+      month,
+      dayOfWeek,
+      parsedWeekdaysList,
+      parsedHolidaysList,
+    );
   }
 }
