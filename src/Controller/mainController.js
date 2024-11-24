@@ -1,14 +1,12 @@
-/* eslint-disable max-lines-per-function */
-
 import { InputHandler } from '../View/inputView.js';
-// import { OutputHandler } from '../View/outputView.js';
+import { OutputHandler } from '../View/outputView.js';
 
 import { parseWorkerList } from '../Model/workerListParser.js';
 
 export class MainController {
   constructor() {
     this.input = new InputHandler();
-    // this.output = new OutputHandler();
+    this.output = new OutputHandler();
   }
 
   async startProgram() {
@@ -23,6 +21,6 @@ export class MainController {
     // 입력한 휴일 근무자
     const parsedHolidaysList = parseWorkerList(workHolidaysList);
 
-    // this.output.printWorkerAllotmentList()
+    this.output.printWorkerAllotmentList(workAllotmentTime);
   }
 }
